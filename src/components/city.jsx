@@ -1,8 +1,8 @@
 import React from 'react';
-import newDelhiImg from '../assets/new delhi.jpg';
-import mumbaiImg from '../assets/mumbai.avif';
-import goaImg from '../assets/goa.jpg';
-import haryanaImg from '../assets/haryana.avif';
+// import newDelhiImg from '../assets/new delhi.jpg';
+// import mumbaiImg from '../assets/mumbai.avif';
+// import goaImg from '../assets/goa.jpg';
+// import haryanaImg from '../assets/haryana.avif';
 
 const cities = [
   { name: 'New Delhi', properties: 28, image: '/images/new delhi.jpg', url: '#' },

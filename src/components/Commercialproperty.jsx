@@ -205,38 +205,41 @@ const CommercialProperty = () => {
     fetchProperties();
   }, []);
 
-  const settings = {
-    dots: false,
-    infinite: properties.length > 3,
-    speed: 600,
-    slidesToShow: Math.min(properties.length, 3),
-    slidesToScroll: 1,
-    centerMode: properties.length > 1,
-    centerPadding: "40px",
-    autoplay: properties.length > 1,
-    autoplaySpeed: 3000,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: Math.min(properties.length, 2),
-          centerMode: properties.length > 1,
-          centerPadding: "30px",
-        },
+const settings = {
+  dots: true, // better for mobile navigation
+  infinite: properties.length > 1,
+  speed: 600,
+  slidesToShow: Math.min(properties.length, 3),
+  slidesToScroll: 1,
+  centerMode: properties.length > 2,
+  centerPadding: "40px",
+  autoplay: properties.length > 1,
+  autoplaySpeed: 3000,
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: Math.min(properties.length, 2),
+        centerMode: false, // fix misalignment at tablet size
+        centerPadding: "0px",
+        arrows: true,
       },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          centerMode: false, // disable center mode for mobile
-          centerPadding: "0px",
-          arrows: false,     // hide arrows for mobile
-          autoplay: properties.length > 1,
-        },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+        centerMode: false, // disable center mode on mobile
+        centerPadding: "0px",
+        arrows: false,     // no arrows, use dots
+        dots: true,
+        autoplay: properties.length > 1,
       },
-    ],
-  };
+    },
+  ],
+};
+
 
   if (loading)
     return (

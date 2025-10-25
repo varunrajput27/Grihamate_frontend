@@ -410,6 +410,46 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, isDeleting }) => 
 };
 
 // ---------------- DashboardHeader ----------------
+// const DashboardHeader = ({ onEditClick, onDeleteClick }) => {
+//     const { user } = useAuth();
+//     const userName = user?.fullname || "John Doe"; 
+//     const userEmail = user?.email || "john.doe@example.com";
+
+//     return (
+//         <header className="relative bg-gray-800 text-white p-4 sm:p-6 shadow-md">
+//             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:justify-between sm:items-center">
+//                 <div className="flex items-center space-x-3">
+//                     <div className="bg-indigo-500 p-2 rounded-full">
+//                         <User className="w-6 h-6" />
+//                     </div>
+//                     <div>
+//                         <h1 className="text-lg sm:text-xl font-bold">Hello, {userName}</h1>
+//                         <p className="text-sm text-gray-400">{userEmail}</p>
+//                     </div>
+//                 </div>
+
+//                 <div className="flex items-center space-x-3 mt-3 sm:mt-0">
+//                     <button
+//                         onClick={onEditClick}
+//                         className="flex items-center bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition duration-150 text-sm cursor-pointer"
+//                     >
+//                         <Edit className="w-4 h-4 mr-2" />
+//                         Edit Profile
+//                     </button>
+//                 </div>
+
+//                 {/* Delete icon fixed top-right */}
+//                 <button
+//                     onClick={onDeleteClick} 
+//                     className="absolute top-3 right-3 p-2 rounded-lg text-white hover:text-red-500 transition duration-150 cursor-pointer"
+//                     title="Delete Account"
+//                 >
+//                     <Trash2 className="w-6 h-6" />
+//                 </button>
+//             </div>
+//         </header>
+//     );
+// };
 const DashboardHeader = ({ onEditClick, onDeleteClick }) => {
     const { user } = useAuth();
     const userName = user?.fullname || "John Doe"; 
@@ -428,15 +468,16 @@ const DashboardHeader = ({ onEditClick, onDeleteClick }) => {
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-3 mt-3 sm:mt-0">
-                    <button
-                        onClick={onEditClick}
-                        className="flex items-center bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition duration-150 text-sm cursor-pointer"
-                    >
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit Profile
-                    </button>
-                </div>
+               <div className="flex items-center mt-3 sm:mt-0">
+    <button
+        onClick={onEditClick}
+        className="flex items-center bg-yellow-400 text-gray-900 font-semibold py-1 px-3 sm:py-2 sm:px-4 rounded-lg hover:bg-yellow-500 transition duration-150 text-xs sm:text-sm ml-2 sm:ml-0"
+    >
+        <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+        Edit Profile
+    </button>
+</div>
+
 
                 {/* Delete icon fixed top-right */}
                 <button
@@ -450,6 +491,7 @@ const DashboardHeader = ({ onEditClick, onDeleteClick }) => {
         </header>
     );
 };
+
 
 // ---------------- BookingItem ----------------
 const BookingItem = ({ booking }) => {
@@ -544,6 +586,43 @@ const DashboardPage = () => {
         };
         fetchData();
     }, [authToken]);
+ useEffect(() => {
+        const fetchBookings = async () => {
+            if (!authToken) return;
+            setIsBookingLoading(true);
+            try {
+                const propRes = await axios.get(`${API_BASE_URL}/api/user/rentandsale`, {
+                    headers: { Authorization: `Bearer ${authToken}` },
+                });
+                const bookRes = await axios.get(`${API_BASE_URL}/api/user/booking`, {
+                    headers: { Authorization: `Bearer ${authToken}` },
+                });
+                
+                const allProperties = propRes.data.properties || [];
+                const propMap = new Map(allProperties.map(p => {
+                    const propertyId = p._id?.$oid || p._id?.toString(); 
+                    return [propertyId, p];
+                }));
+
+                const combined = bookRes.data.bookings.map(b => {
+                    const bookingPropertyId = b.propertyId?.$oid || b.propertyId?.toString();
+                    return {
+                        ...b,
+                        propertyDetails: propMap.get(bookingPropertyId) || null,
+                    };
+                });
+
+                setMyBookings(combined);
+            } catch (err) {
+                console.error("Booking Fetch Error:", err);
+                setBookingError("Failed to fetch applications.");
+            } finally {
+                setIsBookingLoading(false);
+            }
+        };
+        fetchBookings();
+    }, [authToken]);
+
 
     // --- Delete Account ---
     const handleDeleteAccount = async () => {
@@ -614,19 +693,19 @@ const DashboardPage = () => {
                         onClick={() => setActiveTab('rent')} 
                         className={`py-3 px-4 sm:px-6 font-semibold cursor-pointer ${activeTab === 'rent' ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
                     >
-                        <Home className="w-4 h-4 inline mr-2" /> My Rent Properties
+                        <Home className="w-4 h-4 inline mr-2" />Rent
                     </button>
                     <button 
                         onClick={() => setActiveTab('sale')} 
                         className={`py-3 px-4 sm:px-6 font-semibold cursor-pointer ${activeTab === 'sale' ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
                     >
-                        <Home className="w-4 h-4 inline mr-2" /> My Sale Properties
+                        <Home className="w-4 h-4 inline mr-2" />Sale
                     </button>
                     <button 
                         onClick={() => setActiveTab('bookings')} 
                         className={`py-3 px-4 sm:px-6 font-semibold cursor-pointer ${activeTab === 'bookings' ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
                     >
-                        <Receipt className="w-4 h-4 inline mr-2" /> Applications
+                        <Receipt className="w-4 h-4 inline mr-2" />Applications
                     </button>
                 </div>
 

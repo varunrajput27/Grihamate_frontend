@@ -136,40 +136,23 @@ import { FaBed, FaBath, FaHome } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Fallback image if property image fails
 const placeholderImage = "/images/placeholder.jpg";
 
 const PropertyCard = ({ title, price, beds, baths, area, image }) => (
-  <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-auto w-[90%] sm:w-[95%] md:w-[90%]">
-    <div className="relative w-full h-56 sm:h-64">
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-full object-cover"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = placeholderImage;
-        }}
-      />
-    </div>
-
-    <div className="p-4 sm:p-5">
-      <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{title}</h3>
-      <p className="text-2xl font-bold text-indigo-700 mb-2">{price}</p>
-
-      <div className="flex items-center border-t pt-2 mt-2 text-gray-600 text-sm sm:text-base justify-between">
-        <div className="flex items-center gap-1">
-          <FaBed className="text-indigo-600" />
-          <span>{beds}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <FaBath className="text-indigo-600" />
-          <span>{baths}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <FaHome className="text-indigo-600" />
-          <span>{area}</span>
-        </div>
+  <div className="bg-white rounded-xl shadow hover:shadow-xl overflow-hidden border border-gray-100 transition-transform duration-300 hover:-translate-y-2">
+    <img
+      src={image}
+      alt={title}
+      className="w-full h-52 object-cover"
+      onError={(e) => (e.target.src = placeholderImage)}
+    />
+    <div className="p-4">
+      <h3 className="text-lg font-semibold text-gray-800 truncate">{title}</h3>
+      <p className="text-indigo-700 font-bold text-xl mb-2">{price}</p>
+      <div className="flex justify-between text-gray-600 text-sm border-t pt-2">
+        <span className="flex items-center gap-1"><FaBed />{beds}</span>
+        <span className="flex items-center gap-1"><FaBath />{baths}</span>
+        <span className="flex items-center gap-1"><FaHome />{area}</span>
       </div>
     </div>
   </div>
@@ -180,96 +163,69 @@ const CommercialProperty = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProperties = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
-        if (response.data?.properties?.length) {
-          const mapped = response.data.properties.map((prop) => ({
-            id: prop._id,
-            title: prop.basicDetails?.title || "No title",
-            price: prop.basicDetails?.price
-              ? `₹${prop.basicDetails.price.toLocaleString()}`
-              : "Price N/A",
-            beds: prop.basicDetails?.bhkType || "-",
-            baths: prop.basicDetails?.bathrooms || "-",
-            area: prop.basicDetails?.Area || "-",
-            image: prop.images?.[0]?.url || placeholderImage,
-          }));
-          setProperties(mapped);
-        }
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
+        const mapped = res.data?.properties?.map((p) => ({
+          id: p._id,
+          title: p.basicDetails?.title || "No Title",
+          price: p.basicDetails?.price
+            ? `₹${Number(p.basicDetails.price).toLocaleString()}`
+            : "N/A",
+          beds: p.basicDetails?.bhkType || "-",
+          baths: p.basicDetails?.bathrooms || "-",
+          area: p.basicDetails?.Area || "-",
+          image: p.images?.[0]?.url || placeholderImage,
+        }));
+        setProperties(mapped || []);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchProperties();
+    fetchData();
   }, []);
 
   const settings = {
-    dots: false,
+    dots: true,
     infinite: properties.length > 1,
-    speed: 600,
-    slidesToShow: Math.min(properties.length, 3),
+    speed: 500,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: properties.length > 1,
+    autoplay: true,
     autoplaySpeed: 3000,
-    arrows: true,
-    centerMode: false,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: Math.min(properties.length, 2),
-          centerMode: false,
-          arrows: true,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          centerMode: false,
-          arrows: false,
-          autoplay: true,
-          speed: 500,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 1, arrows: false } },
     ],
   };
 
   if (loading)
-    return (
-      <div className="text-center py-16 text-gray-600 text-lg">Loading properties...</div>
-    );
+    return <div className="text-center py-16 text-gray-500">Loading...</div>;
 
-  if (properties.length === 0)
-    return (
-      <div className="text-center py-16 text-gray-600 text-lg">No commercial properties found.</div>
-    );
+  if (!properties.length)
+    return <div className="text-center py-16 text-gray-500">No properties found</div>;
 
   return (
-    <section className="bg-gradient-to-b from-gray-50 via-white to-gray-100 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-700 to-blue-600 bg-clip-text text-transparent mb-3">
+    <section className="bg-gray-50 py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-indigo-700 mb-2">
             Commercial Properties
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
-            Explore premium commercial spaces designed to elevate your business — modern, strategic, and investment-worthy.
+          <p className="text-gray-600">
+            Find premium spaces designed for your business success.
           </p>
         </div>
 
-        <div className="relative">
-          <Slider {...settings}>
-            {properties.map((property) => (
-              <div key={property.id}>
-                <PropertyCard {...property} />
-              </div>
-            ))}
-          </Slider>
-        </div>
+        <Slider {...settings}>
+          {properties.map((p) => (
+            <div key={p.id} className="px-2">
+              <PropertyCard {...p} />
+            </div>
+          ))}
+        </Slider>
       </div>
     </section>
   );

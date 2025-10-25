@@ -1,134 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import Slider from "react-slick";
-// import axios from "axios";
-// import { FaBed, FaBath, FaHome } from "react-icons/fa";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-
-// // const placeholderImage = "/assets/placeholder.jpg";
-
-// const PropertyCard = ({ title, price, beds, baths, area, image }) => (
-//   <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-2">
-//     <div className="relative">
-//       <img
-//         src={image}
-//         alt={title}
-//         className="w-full h-56 object-cover"
-//         onError={(e) => {
-//           e.target.onerror = null;
-//           e.target.src = placeholderImage;
-//         }}
-//       />
-//     </div>
-
-//     <div className="p-4 sm:p-5">
-//       <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{title}</h3>
-//       <p className="text-2xl font-bold text-indigo-700 mb-2">{price}</p>
-//       <div className="flex items-center border-t pt-2 mt-2 text-gray-600 text-sm sm:text-base justify-between">
-//         <div className="flex items-center gap-1">
-//           <FaBed className="text-indigo-600" />
-//           <span>{beds}</span>
-//         </div>
-//         <div className="flex items-center gap-1">
-//           <FaBath className="text-indigo-600" />
-//           <span>{baths}</span>
-//         </div>
-//         <div className="flex items-center gap-1">
-//           <FaHome className="text-indigo-600" />
-//           <span>{area}</span>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const CommercialProperty = () => {
-//   const [properties, setProperties] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchProperties = async () => {
-//       try {
-//         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
-//         if (response.data?.properties?.length) {
-//           const mapped = response.data.properties.map((prop) => ({
-//             id: prop._id,
-//             title: prop.basicDetails?.title || "No title",
-//             price: prop.basicDetails?.price
-//               ? `₹${prop.basicDetails.price.toLocaleString()}`
-//               : "Price N/A",
-//             beds: prop.basicDetails?.bhkType || "-",
-//             baths: prop.basicDetails?.bathrooms || "-",
-//             area: prop.basicDetails?.area || "-",
-//             image: prop.images?.[0]?.url || placeholderImage,
-//           }));
-//           setProperties(mapped);
-//         }
-//       } catch (err) {
-//         console.error(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProperties();
-//   }, []);
-
-//   const settings = {
-//     dots: false,
-//     infinite: properties.length > 3,
-//     speed: 600,
-//     slidesToShow: Math.min(properties.length, 3),
-//     slidesToScroll: 1,
-//     centerMode: properties.length > 1,
-//     centerPadding: "40px",
-//     autoplay: properties.length > 1,
-//     autoplaySpeed: 3000,
-//     arrows: true,
-//     responsive: [
-//       { breakpoint: 1280, settings: { slidesToShow: Math.min(properties.length, 2), centerPadding: "30px" } },
-//       { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "20px" } },
-//     ],
-//   };
-
-//   if (loading)
-//     return (
-//       <div className="text-center py-16 text-gray-600 text-lg">Loading properties...</div>
-//     );
-
-//   if (properties.length === 0)
-//     return (
-//       <div className="text-center py-16 text-gray-600 text-lg">No commercial properties found.</div>
-//     );
-
-//   return (
-//     <section className="bg-gradient-to-b from-gray-50 via-white to-gray-100 py-16">
-//       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-//         <div className="text-center mb-14">
-//           <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-700 to-blue-600 bg-clip-text text-transparent mb-3">
-//             Commercial Properties
-//           </h2>
-//           <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
-//             Explore premium commercial spaces designed to elevate your business — modern, strategic, and investment-worthy.
-//           </p>
-//         </div>
-
-//         <div className="relative px-2 sm:px-4 lg:px-6">
-//           <Slider {...settings}>
-//             {properties.map((property) => (
-//               <div key={property.id}>
-//                 <PropertyCard {...property} />
-//               </div>
-//             ))}
-//           </Slider>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default CommercialProperty;
-
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import axios from "axios";
@@ -136,23 +5,38 @@ import { FaBed, FaBath, FaHome } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const placeholderImage = "/images/placeholder.jpg";
+// const placeholderImage = "/assets/placeholder.jpg";
 
 const PropertyCard = ({ title, price, beds, baths, area, image }) => (
-  <div className="bg-white rounded-xl shadow hover:shadow-xl overflow-hidden border border-gray-100 transition-transform duration-300 hover:-translate-y-2">
-    <img
-      src={image}
-      alt={title}
-      className="w-full h-52 object-cover"
-      onError={(e) => (e.target.src = placeholderImage)}
-    />
-    <div className="p-4">
-      <h3 className="text-lg font-semibold text-gray-800 truncate">{title}</h3>
-      <p className="text-indigo-700 font-bold text-xl mb-2">{price}</p>
-      <div className="flex justify-between text-gray-600 text-sm border-t pt-2">
-        <span className="flex items-center gap-1"><FaBed />{beds}</span>
-        <span className="flex items-center gap-1"><FaBath />{baths}</span>
-        <span className="flex items-center gap-1"><FaHome />{area}</span>
+  <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-2">
+    <div className="relative">
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-56 object-cover"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = placeholderImage;
+        }}
+      />
+    </div>
+
+    <div className="p-4 sm:p-5">
+      <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{title}</h3>
+      <p className="text-2xl font-bold text-indigo-700 mb-2">{price}</p>
+      <div className="flex items-center border-t pt-2 mt-2 text-gray-600 text-sm sm:text-base justify-between">
+        <div className="flex items-center gap-1">
+          <FaBed className="text-indigo-600" />
+          <span>{beds}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <FaBath className="text-indigo-600" />
+          <span>{baths}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <FaHome className="text-indigo-600" />
+          <span>{area}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -163,72 +47,86 @@ const CommercialProperty = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProperties = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
-        const mapped = res.data?.properties?.map((p) => ({
-          id: p._id,
-          title: p.basicDetails?.title || "No Title",
-          price: p.basicDetails?.price
-            ? `₹${Number(p.basicDetails.price).toLocaleString()}`
-            : "N/A",
-          beds: p.basicDetails?.bhkType || "-",
-          baths: p.basicDetails?.bathrooms || "-",
-          area: p.basicDetails?.Area || "-",
-          image: p.images?.[0]?.url || placeholderImage,
-        }));
-        setProperties(mapped || []);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
+        if (response.data?.properties?.length) {
+          const mapped = response.data.properties.map((prop) => ({
+            id: prop._id,
+            title: prop.basicDetails?.title || "No title",
+            price: prop.basicDetails?.price
+              ? `₹${prop.basicDetails.price.toLocaleString()}`
+              : "Price N/A",
+            beds: prop.basicDetails?.bhkType || "-",
+            baths: prop.basicDetails?.bathrooms || "-",
+            area: prop.basicDetails?.Area || "-",
+            image: prop.images?.[0]?.url || placeholderImage,
+          }));
+          setProperties(mapped);
+        }
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+
+    fetchProperties();
   }, []);
 
   const settings = {
-    dots: true,
-    infinite: properties.length > 1,
-    speed: 500,
-    slidesToShow: 3,
+    dots: false,
+    infinite: properties.length > 3,
+    speed: 600,
+    slidesToShow: Math.min(properties.length, 3),
     slidesToScroll: 1,
-    autoplay: true,
+    centerMode: properties.length > 1,
+    centerPadding: "40px",
+    autoplay: properties.length > 1,
     autoplaySpeed: 3000,
+    arrows: true,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1, arrows: false } },
+      { breakpoint: 1280, settings: { slidesToShow: Math.min(properties.length, 2), centerPadding: "30px" } },
+      { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "20px" } },
     ],
   };
 
   if (loading)
-    return <div className="text-center py-16 text-gray-500">Loading...</div>;
+    return (
+      <div className="text-center py-16 text-gray-600 text-lg">Loading properties...</div>
+    );
 
-  if (!properties.length)
-    return <div className="text-center py-16 text-gray-500">No properties found</div>;
+  if (properties.length === 0)
+    return (
+      <div className="text-center py-16 text-gray-600 text-lg">No commercial properties found.</div>
+    );
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-indigo-700 mb-2">
+    <section className="bg-gradient-to-b from-gray-50 via-white to-gray-100 py-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="text-center mb-14">
+          <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-700 to-blue-600 bg-clip-text text-transparent mb-3">
             Commercial Properties
           </h2>
-          <p className="text-gray-600">
-            Find premium spaces designed for your business success.
+          <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
+            Explore premium commercial spaces designed to elevate your business — modern, strategic, and investment-worthy.
           </p>
         </div>
 
-        <Slider {...settings}>
-          {properties.map((p) => (
-            <div key={p.id} className="px-2">
-              <PropertyCard {...p} />
-            </div>
-          ))}
-        </Slider>
+        <div className="relative px-2 sm:px-4 lg:px-6">
+          <Slider {...settings}>
+            {properties.map((property) => (
+              <div key={property.id}>
+                <PropertyCard {...property} />
+              </div>
+            ))}
+          </Slider>
+        </div>
       </div>
     </section>
   );
 };
 
 export default CommercialProperty;
+
+

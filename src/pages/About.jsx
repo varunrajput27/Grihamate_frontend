@@ -8,10 +8,10 @@ import React from 'react';
 
 // Team members data
 const teamMembers = [
-    { name: 'Aditya Mishra', role: 'Founder', img: '/images/nobita.jpg' },
-    { name: 'Pooja Prajapati', role: 'UX/UI Designer', img: '/images/sizuka.jpg'},
-    { name: 'Pranjal Takkar', role: 'Frontend Developer', img: '/images/girl2.jfif' },
-    { name: 'Shilpi Kumari', role: 'Backend Developer', img: '/images/girl3.jfif' },
+    { name: 'Varun Rajput', role: 'Founder', img: '/images/nobita.jpg' },
+    { name: 'Smriti Garg', role: 'UX/UI Designer', img: '/images/sizuka.jpg'},
+    { name: 'Neha Singh', role: 'Frontend Developer', img: '/images/girl2.jfif' },
+    { name: 'Akansha Tomar', role: 'Backend Developer', img: '/images/girl3.jfif' },
 ];
 
 // Core Values data

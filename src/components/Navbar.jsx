@@ -167,22 +167,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaUser, FaPlus, FaSignOutAlt, FaUserCircle, FaTachometerAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext'; 
-// Note: Logo path ko /images/logo.png rakha gaya hai, public folder ke liye.
 
 // ===========================================
 // 1. User Dropdown Component
 // ===========================================
-// Yeh component user ke profile aur logout options ko handle karta hai.
 const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
         <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-            
             {/* User Name */}
             <div className="px-4 py-2 text-sm text-gray-900 border-b border-gray-100 font-bold truncate">
                 {user ? user.fullname : 'User Profile'} 
             </div>
 
-            {/* Profile Button (Modal opener) */}
+            {/* Profile */}
             <button 
                 onClick={() => {
                     closeDropdown();
@@ -195,7 +192,7 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
                 Profile
             </button>
             
-            {/* Dashboard Link */}
+            {/* Dashboard */}
             <Link 
                 to="/dashboard" 
                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" 
@@ -206,7 +203,7 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
                 Dashboard
             </Link>
             
-            {/* Logout Button */}
+            {/* Logout */}
             <button 
                 onClick={onLogout} 
                 className="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 cursor-pointer" 
@@ -219,14 +216,11 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
     </div>
 );
 
-// -------------------------------------------
+// ===========================================
 // 2. Mobile Menu Component
-// -------------------------------------------
-// Yeh component mobile screen par dikhne wale links ko render karta hai.
-const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu }) => {
-    
-    const { logout } = useAuth();
-    
+// ===========================================
+const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu, logout }) => {
+
     const handleLogout = () => {
         logout();
         closeMenu();
@@ -234,7 +228,6 @@ const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu }) => {
 
     return (
         <div className="px-4 pt-4 pb-3 space-y-1"> 
-            {/* Navigation Links */}
             {navItems.map((item) => (
                 <Link
                     key={item.name}
@@ -252,7 +245,6 @@ const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu }) => {
 
             <hr className="my-2 border-gray-200" />
 
-            {/* Login / Logout Link */}
             {isLoggedIn ? (
                 <button
                     onClick={handleLogout}
@@ -275,18 +267,18 @@ const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu }) => {
     );
 };
 
-// -------------------------------------------
-// 3. Main Navbar Component (Responsive, Slide-in, Blur)
-// -------------------------------------------
+// ===========================================
+// 3. Main Navbar Component
+// ===========================================
 const Navbar = ({ onListPropertyClick, openProfileModal }) => { 
     const location = useLocation(); 
     const { isLoggedIn, logout, user } = useAuth(); 
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const menuRef = useRef(null); // Mobile Menu outside click ref
-    const dropdownRef = useRef(null); // User Dropdown outside click ref
+    const menuRef = useRef(null);
+    const dropdownRef = useRef(null);
 
     const handleLogout = () => {
         logout(); 
@@ -296,33 +288,25 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    // Outside click logic (Dropdown and Mobile Menu dono ke liye)
+    // Close dropdown and mobile menu on outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Dropdown close logic
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsDropdownOpen(false);
             }
-            
-            // Mobile Menu close logic
-            // Check karte hain ki click menu ke bahar aur hamburger button par toh nahi hua.
             const isHamburgerClick = event.target.closest('#hamburger-button');
-
             if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target) && !isHamburgerClick) {
                 setIsMenuOpen(false);
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isMenuOpen]); 
 
     const navItems = [
         { name: 'Home', path: '/' },
         { name: 'Rent', path: '/rent' },
-        { name: 'Buy', 'path': '/buy' },
+        { name: 'Buy', path: '/buy' },
         { name: 'About us', path: '/about' },
         { name: 'Contact us', path: '/contact' },
     ];
@@ -331,11 +315,10 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
         <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
                 
-                {/* Logo Section */}
+                {/* Logo */}
                 <div className="flex-shrink-0 flex items-center">
                     <Link to="/" className="flex items-center" onClick={closeMenu}>
                         <img
-                            // Path: public/images/logo.png ke liye
                             src="/images/logo.png" 
                             alt="Grihamate Logo"
                             className="w-10 h-10 mr-2 object-contain"
@@ -344,7 +327,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                     </Link>
                 </div>
                 
-                {/* Navigation Links Section (Desktop) */}
+                {/* Desktop Links */}
                 <div className="hidden lg:flex flex-grow justify-center space-x-8">
                     {navItems.map((item) => (
                         <Link
@@ -361,10 +344,10 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                     ))}
                 </div>
 
-                {/* --- Controls: List Property / User Icon / Hamburger --- */}
+                {/* Controls */}
                 <div className="flex items-center space-x-3">
                     
-                    {/* LIST PROPERTY BUTTON (Always visible) */}
+                    {/* List Property */}
                     <button
                         onClick={onListPropertyClick} 
                         className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-gray-800 bg-yellow-300 hover:bg-yellow-500 transition duration-150 ease-in-out cursor-pointer"
@@ -374,7 +357,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                         <span className="sm:hidden">Post</span> 
                     </button>
 
-                    {/* Hamburger Button (Mobile Only) */}
+                    {/* Hamburger */}
                     <button
                         id="hamburger-button"
                         type="button"
@@ -384,7 +367,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                         {isMenuOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
                     </button>
 
-                    {/* User Controls (Desktop Only) */}
+                    {/* User Icon (Desktop Only) */}
                     <div className="hidden lg:flex relative" ref={dropdownRef}> 
                         {isLoggedIn ? (
                             <>
@@ -416,10 +399,9 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                 </div>
             </div>
 
-            {/* --- Mobile Menu Container (Slide-in from Right) --- */}
+            {/* Mobile Menu */}
             <div 
                 ref={menuRef} 
-                // w-3/4 (75% width) set kiya hai aur right se slide-in/out ke liye classes use ki hain.
                 className={`lg:hidden fixed top-20 right-0 h-[calc(100vh-80px)] w-3/4 sm:w-1/2 bg-white shadow-xl z-40 transform transition-transform duration-500 ease-in-out
                     ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`} 
             >
@@ -428,13 +410,13 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                     location={location}
                     isLoggedIn={isLoggedIn}
                     closeMenu={closeMenu}
+                    logout={logout}
                 />
             </div>
 
-            {/* --- Overlay (Background Blur Effect) --- */}
+            {/* Overlay */}
             {isMenuOpen && (
                  <div 
-                    // backdrop-blur-sm se background blur hoga
                    className="lg:hidden fixed inset-0 bg-transparent backdrop-blur-lg z-30 top-20"
                     onClick={() => setIsMenuOpen(false)} 
                 ></div>

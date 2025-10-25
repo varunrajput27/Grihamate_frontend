@@ -168,7 +168,7 @@
 // );
 
 // export default QuickView;
-/ components/QuickViewModal.jsx
+// / components/QuickViewModal.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Bed, Bath, Car, Ruler, Phone, Mail } from "lucide-react";

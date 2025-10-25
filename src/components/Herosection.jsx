@@ -1,0 +1,204 @@
+import React, { useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+// import search from '../assets/search.jpg';
+import axios from 'axios';
+
+const Spinner = () => (
+  <svg
+    className="animate-spin h-5 w-5 text-gray-800"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 
+      5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    />
+  </svg>
+);
+
+const HeroSection = ({ onSearch }) => {
+  const [cities, setCities] = useState([]);
+  const [loadingCities, setLoadingCities] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [propertyType, setPropertyType] = useState('');
+  const [location, setLocation] = useState('');
+  const [rentBuy, setRentBuy] = useState('');
+  const [bedrooms, setBedrooms] = useState('');
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        setLoadingCities(true);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/cities`);
+        if (res.data?.cities) {
+          setCities(res.data.cities.sort((a, b) => a.localeCompare(b)));
+        }
+      } catch (error) {
+        console.error('Failed to fetch cities:', error);
+      } finally {
+        setLoadingCities(false);
+      }
+    };
+    fetchCities();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSearching(true);
+
+    const filters = {
+      propertyType,
+      city: location,
+      rentBuy,
+      bedrooms,
+    };
+
+    setTimeout(() => {
+      onSearch(filters);
+      setIsSearching(false);
+
+      // Slight scroll down after search
+      window.scrollTo({ top: window.innerHeight * 1.0, behavior: 'smooth' });
+    }, 800); // thoda fast
+  };
+
+  return (
+    <div
+      className="relative h-screen bg-cover bg-center flex items-center justify-center p-4"
+      style={{ backgroundImage: "url('/search.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="relative z-10 text-center text-white max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+          Apka Apna Property Saathi
+        </h1>
+        <p className="text-2xl md:text-3xl font-bold text-yellow-400 mb-6 drop-shadow-md">
+          With 0% Brokerage
+        </p>
+        <p className="text-lg md:text-xl mb-10 drop-shadow-sm">
+          Find your perfect home or investment opportunity
+        </p>
+
+        <div className="bg-white p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-5xl mx-auto">
+          <form
+            className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
+            onSubmit={handleSubmit}
+          >
+            {/* Property Type */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-left cursor-pointer">
+                Property Type
+              </label>
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 text-gray-800 cursor-pointer focus:outline-none focus:ring-0"
+              >
+                <option value="">All</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Villa">Villa</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-left cursor-pointer">
+                Location
+              </label>
+              <select
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 text-gray-800 cursor-pointer focus:outline-none focus:ring-0"
+              >
+                <option value="">All</option>
+                {loadingCities ? (
+                  <option disabled>Loading...</option>
+                ) : (
+                  cities.map((city) => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+
+            {/* Rent/Buy */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-left cursor-pointer">
+                Rent/Buy
+              </label>
+              <select
+                value={rentBuy}
+                onChange={(e) => setRentBuy(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 text-gray-800 cursor-pointer focus:outline-none focus:ring-0"
+              >
+                <option value="">All</option>
+                <option value="Rent">Rent</option>
+                <option value="Sale">Buy</option>
+              </select>
+            </div>
+
+            {/* Bedrooms */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-left cursor-pointer">
+                Bedrooms
+              </label>
+              <select
+                value={bedrooms}
+                onChange={(e) => setBedrooms(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 text-gray-800 cursor-pointer focus:outline-none focus:ring-0"
+              >
+                <option value="">All</option>
+                <option value="1BHK">1 BHK</option>
+                <option value="2BHK">2 BHK</option>
+                <option value="3BHK">3 BHK</option>
+                <option value="4BHK">4 BHK</option>
+                <option value="5BHK">5 BHK</option>
+              </select>
+            </div>
+
+            {/* Search Button */}
+            <div className="md:col-span-4 mt-4">
+              <button
+                type="submit"
+                disabled={isSearching}
+                className={`w-full flex items-center justify-center px-6 py-3 text-base font-medium rounded-md shadow-sm transition duration-150 ease-in-out cursor-pointer ${
+                  isSearching
+                    ? 'bg-yellow-400 opacity-80 cursor-not-allowed'
+                    : 'bg-yellow-300 hover:bg-yellow-500 text-gray-800'
+                }`}
+              >
+                {isSearching ? (
+                  <>
+                    <Spinner />
+                    <span className="ml-2">Searching...</span>
+                  </>
+                ) : (
+                  <>
+                    <FaSearch className="mr-2" /> Search Properties
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;

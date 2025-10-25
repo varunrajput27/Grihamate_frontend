@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import apartmentImg from "../assets/apartment.jpg";
+// import apartmentImg from "../assets/apartment.jpg";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 

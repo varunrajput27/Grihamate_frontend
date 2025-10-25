@@ -5,13 +5,13 @@ import { FaBed, FaBath, FaHome } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const placeholderImage = "/assets/placeholder.jpg";
+// const placeholderImage = "/assets/placeholder.jpg";
 
 const PropertyCard = ({ title, price, beds, baths, area, image }) => (
   <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-2">
     <div className="relative">
       <img
-        src={image || placeholderImage}
+        src={image}
         alt={title}
         className="w-full h-56 object-cover"
         onError={(e) => {

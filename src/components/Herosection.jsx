@@ -113,9 +113,9 @@ const HeroSection = ({ onSearch }) => {
             onClick={handleClearFilters}
             className="absolute top-2 right-2 text-gray-500 hover:text-red-600 transition duration-150 p-2 rounded-full flex items-center"
           >
-            <FaTimesCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
-            <span className="hidden sm:inline text-xs sm:text-sm font-semibold">Clear Filters</span>
-            <span className="sm:hidden text-xs">✕</span>
+            <FaTimesCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 cursor-pointer" />
+            {/* <span className="hidden sm:inline text-xs sm:text-sm font-semibold">Clear Filters</span> */}
+            {/* <span className="sm:hidden text-xs cursor-pointer">✕</span> */}
           </button>
 
           <form

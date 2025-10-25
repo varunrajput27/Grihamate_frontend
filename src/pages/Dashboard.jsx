@@ -586,7 +586,8 @@ const DashboardPage = () => {
         };
         fetchData();
     }, [authToken]);
- useEffect(() => {
+
+     useEffect(() => {
         const fetchBookings = async () => {
             if (!authToken) return;
             setIsBookingLoading(true);
@@ -622,6 +623,7 @@ const DashboardPage = () => {
         };
         fetchBookings();
     }, [authToken]);
+
 
 
     // --- Delete Account ---

@@ -164,12 +164,12 @@
 // export default Navbar;
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
     FaUser, FaPlus, FaSignOutAlt, FaUserCircle, 
     FaTachometerAlt, FaBars, FaTimes 
 } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
 
 // ===========================================
 // 1. User Dropdown (Desktop)
@@ -178,7 +178,7 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
         <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
             <div className="px-4 py-2 text-sm text-gray-900 border-b border-gray-100 font-bold truncate">
-                {user ? user.fullname : 'User Profile'} 
+                {user ? user.fullname : 'User Profile'}
             </div>
 
             <button 
@@ -197,7 +197,7 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
                 to="/dashboard" 
                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" 
                 role="menuitem"
-                onClick={closeDropdown} 
+                onClick={closeDropdown}
             >
                 <FaTachometerAlt className="mr-3 h-4 w-4 text-indigo-600" />
                 Dashboard
@@ -297,6 +297,7 @@ const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu, logout, user, o
 // ===========================================
 const Navbar = ({ onListPropertyClick, openProfileModal }) => { 
     const location = useLocation(); 
+    const navigate = useNavigate(); // ✅ yahan add kara
     const { isLoggedIn, logout, user } = useAuth(); 
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -307,13 +308,14 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
 
     const handleLogout = () => {
         logout(); 
+        navigate('/'); // ✅ redirect to home
         setIsDropdownOpen(false);
         setIsMenuOpen(false); 
     };
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    // Close dropdown and menu on outside click
+    // ✅ Close dropdown & mobile menu on outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -340,7 +342,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
         <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
                 
-                {/* Logo */}
+                {/* ✅ Logo */}
                 <div className="flex-shrink-0 flex items-center">
                     <Link to="/" className="flex items-center" onClick={closeMenu}>
                         <img
@@ -348,11 +350,10 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                             alt="Grihamate Logo"
                             className="w-10 h-10 mr-2 object-contain"
                         />
-                        {/* <span className="text-xl font-semibold text-[#3d5a80]">Grihamate</span> */}
                     </Link>
                 </div>
                 
-                {/* Desktop Links */}
+                {/* ✅ Desktop Nav Links */}
                 <div className="hidden lg:flex flex-grow justify-center space-x-8">
                     {navItems.map((item) => (
                         <Link
@@ -369,20 +370,20 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                     ))}
                 </div>
 
-                {/* Controls */}
+                {/* ✅ Right Side Controls */}
                 <div className="flex items-center space-x-3">
                     
-                    {/* List Property */}
+                    {/* List Property Button */}
                     <button
                         onClick={onListPropertyClick} 
                         className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-gray-800 bg-yellow-300 hover:bg-yellow-500 transition duration-150 ease-in-out cursor-pointer"
                     >
                         <FaPlus className="mr-2 h-3 w-3" />
                         <span className="hidden sm:inline">List Property</span>
-                        <span className="sm:hidden">Post</span> 
+                        <span className="sm:hidden">Post</span>
                     </button>
 
-                    {/* Hamburger (Mobile Only) */}
+                    {/* Hamburger Menu (Mobile) */}
                     <button
                         id="hamburger-button"
                         type="button"
@@ -392,7 +393,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                         {isMenuOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
                     </button>
 
-                    {/* User Icon (Desktop Only) */}
+                    {/* ✅ User Icon (Desktop) */}
                     <div className="hidden lg:flex relative" ref={dropdownRef}> 
                         {isLoggedIn ? (
                             <>
@@ -426,7 +427,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* ✅ Mobile Menu */}
             <div 
                 ref={menuRef} 
                 className={`lg:hidden fixed top-20 right-0 h-[calc(100vh-80px)] w-3/4 sm:w-1/2 bg-white shadow-xl z-40 transform transition-transform duration-500 ease-in-out
@@ -443,7 +444,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                 />
             </div>
 
-            {/* Overlay */}
+            {/* ✅ Overlay */}
             {isMenuOpen && (
                  <div 
                    className="lg:hidden fixed inset-0 bg-transparent backdrop-blur-lg z-30 top-20"
@@ -455,4 +456,3 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
 };
 
 export default Navbar;
-

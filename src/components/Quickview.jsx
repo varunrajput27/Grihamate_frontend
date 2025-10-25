@@ -5,12 +5,15 @@ import { Bed, Bath, Car, Ruler, Phone, Mail } from "lucide-react";
 
 const QuickView = ({ property, onClose }) => {
   const navigate = useNavigate(); 
-  
+
   if (!property) return null;
 
-  // 💡 FIX: Assuming ID comes as '_id' from API, we rename it to 'id'
+  // Extract actual string ID from MongoDB object
+  // const id = property._id?.$oid;
+  const id = property._id?.$oid || property._id;
+
+
   const {
-    _id: id, 
     images,
     listingType = "For Rent",
     basicDetails = {},
@@ -19,46 +22,31 @@ const QuickView = ({ property, onClose }) => {
     description,
   } = property;
 
-  // Yahaan hum sirf console.log kar rahe hain, navigation check handleViewFullDetails mein hai
-  if (!id) {
-    console.error("Property ID is missing or incorrect in the property object.");
-  }
-
   const title = basicDetails.title || "No Title";
   const price = basicDetails.price || basicDetails.monthlyRent || 0;
   const imageUrl = images?.[0]?.url || "https://via.placeholder.com/400x250";
   const fullAddress = location.fullAddress || location.city || "Unknown Location";
 
-  // Navigation Handler with Safety Check
   const handleViewFullDetails = () => {
-    // Safety Check: Agar ID hi nahi hai toh navigate mat karo
     if (!id) {
-        alert("Sorry, property details are unavailable. Missing ID.");
-        onClose(); 
-        return; 
+      alert("Sorry, property details are unavailable. Missing ID.");
+      onClose(); 
+      return; 
     }
     
-    // Quick View Modal ko band karein
-    onClose();
+    onClose(); // Close the modal
 
-    // Single general route par navigate karein: /property/:id
     navigate(`/property/${id}`, { 
-        state: { 
-            listingType: listingType 
-        } 
+      state: { listingType } 
     }); 
   };
 
   // Price formatter (Cr / Lakh)
   const formatPrice = (value) => {
     if (!value) return "0";
-    if (value >= 10000000) {
-      return (value / 10000000).toFixed(2) + " Cr";
-    } else if (value >= 100000) {
-      return (value / 100000).toFixed(2) + " Lakhs";
-    } else {
-      return value.toLocaleString();
-    }
+    if (value >= 10000000) return (value / 10000000).toFixed(2) + " Cr";
+    if (value >= 100000) return (value / 100000).toFixed(2) + " Lakhs";
+    return value.toLocaleString();
   };
 
   return (
@@ -78,7 +66,6 @@ const QuickView = ({ property, onClose }) => {
           Quick View
         </h2>
 
-        {/* --- Main Content --- */}
         <div className="flex flex-col md:flex-row gap-6">
           {/* Image Section */}
           <div className="md:w-1/2 w-full">
@@ -114,7 +101,7 @@ const QuickView = ({ property, onClose }) => {
 
             <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
               <Feature icon={<Bed size={20} />} label={basicDetails.bhkType || "NA"} subLabel="Bedrooms" />
-              <Feature icon={<Ruler size={20} />} label={basicDetails.area || "NA"} subLabel="Area (sq.ft)" />
+              <Feature icon={<Ruler size={20} />} label={basicDetails.Area || "NA"} subLabel="Area (sq.ft)" />
               <Feature icon={<Bath size={20} />} label={basicDetails.bathrooms || "NA"} subLabel="Bathrooms" />
               <Feature icon={<Car size={20} />} label={basicDetails.garages || "NA"} subLabel="Garage" />
             </div>
@@ -134,7 +121,7 @@ const QuickView = ({ property, onClose }) => {
                 <Phone size={16} /> Call Now
               </a>
               <a
-                href="mailto:Grihamateoffical@gmail.com"
+                href={`mailto:${contactInfo.email || "Grihamateoffical@gmail.com"}`}
                 className="border border-gray-300 px-5 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-gray-100 transition cursor-pointer"
               >
                 <Mail size={16} /> Mail
@@ -143,7 +130,7 @@ const QuickView = ({ property, onClose }) => {
           </div>
         </div>
 
-        {/* --- View Full Details Button --- */}
+        {/* View Full Details Button */}
         <div className="text-center mt-6">
           <button
             onClick={handleViewFullDetails}

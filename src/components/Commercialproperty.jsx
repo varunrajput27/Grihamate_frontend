@@ -128,6 +128,7 @@
 // };
 
 // export default CommercialProperty;
+
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import axios from "axios";
@@ -135,11 +136,10 @@ import { FaBed, FaBath, FaHome } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Fallback image if property image fails
 const placeholderImage = "/images/placeholder.jpg";
 
 const PropertyCard = ({ title, price, beds, baths, area, image }) => (
-  <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-2 sm:mx-0">
+  <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-3">
     <div className="relative w-full h-64 sm:h-56">
       <img
         src={image}
@@ -153,7 +153,9 @@ const PropertyCard = ({ title, price, beds, baths, area, image }) => (
     </div>
 
     <div className="p-4 sm:p-5">
-      <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">
+        {title}
+      </h3>
       <p className="text-2xl font-bold text-indigo-700 mb-2">{price}</p>
       <div className="flex items-center border-t pt-2 mt-2 text-gray-600 text-sm sm:text-base justify-between">
         <div className="flex items-center gap-1">
@@ -180,7 +182,9 @@ const CommercialProperty = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/sale/all`
+        );
         if (response.data?.properties?.length) {
           const mapped = response.data.properties.map((prop) => ({
             id: prop._id,
@@ -205,50 +209,53 @@ const CommercialProperty = () => {
     fetchProperties();
   }, []);
 
-const settings = {
-  dots: true, // better for mobile navigation
-  infinite: properties.length > 1,
-  speed: 600,
-  slidesToShow: Math.min(properties.length, 3),
-  slidesToScroll: 1,
-  centerMode: properties.length > 2,
-  centerPadding: "40px",
-  autoplay: properties.length > 1,
-  autoplaySpeed: 3000,
-  arrows: true,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: Math.min(properties.length, 2),
-        centerMode: false, // fix misalignment at tablet size
-        centerPadding: "0px",
-        arrows: true,
+  const settings = {
+    dots: true,
+    infinite: properties.length > 1,
+    speed: 600,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: properties.length > 1,
+    autoplaySpeed: 3000,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024, // tablet
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          arrows: true,
+          dots: true,
+        },
       },
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        centerMode: false, // disable center mode on mobile
-        centerPadding: "0px",
-        arrows: false,     // no arrows, use dots
-        dots: true,
-        autoplay: properties.length > 1,
+      {
+        breakpoint: 768, // mobile
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+          dots: true,
+          centerMode: false,
+          autoplay: true,
+          autoplaySpeed: 2500,
+        },
       },
-    },
-  ],
-};
-
+    ],
+  };
 
   if (loading)
     return (
-      <div className="text-center py-16 text-gray-600 text-lg">Loading properties...</div>
+      <div className="text-center py-16 text-gray-600 text-lg">
+        Loading properties...
+      </div>
     );
 
   if (properties.length === 0)
     return (
-      <div className="text-center py-16 text-gray-600 text-lg">No commercial properties found.</div>
+      <div className="text-center py-16 text-gray-600 text-lg">
+        No commercial properties found.
+      </div>
     );
 
   return (
@@ -278,4 +285,3 @@ const settings = {
 };
 
 export default CommercialProperty;
-

@@ -165,21 +165,22 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaUser, FaPlus, FaSignOutAlt, FaUserCircle, FaTachometerAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { 
+    FaUser, FaPlus, FaSignOutAlt, FaUserCircle, 
+    FaTachometerAlt, FaBars, FaTimes 
+} from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext'; 
 
 // ===========================================
-// 1. User Dropdown Component
+// 1. User Dropdown (Desktop)
 // ===========================================
 const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
         <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-            {/* User Name */}
             <div className="px-4 py-2 text-sm text-gray-900 border-b border-gray-100 font-bold truncate">
                 {user ? user.fullname : 'User Profile'} 
             </div>
 
-            {/* Profile */}
             <button 
                 onClick={() => {
                     closeDropdown();
@@ -192,7 +193,6 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
                 Profile
             </button>
             
-            {/* Dashboard */}
             <Link 
                 to="/dashboard" 
                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" 
@@ -203,7 +203,6 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
                 Dashboard
             </Link>
             
-            {/* Logout */}
             <button 
                 onClick={onLogout} 
                 className="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 cursor-pointer" 
@@ -219,8 +218,7 @@ const UserDropdown = ({ onLogout, closeDropdown, user, onProfileClick }) => (
 // ===========================================
 // 2. Mobile Menu Component
 // ===========================================
-const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu, logout }) => {
-
+const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu, logout, user, onProfileClick }) => {
     const handleLogout = () => {
         logout();
         closeMenu();
@@ -243,16 +241,43 @@ const MobileMenu = ({ navItems, location, isLoggedIn, closeMenu, logout }) => {
                 </Link>
             ))}
 
-            <hr className="my-2 border-gray-200" />
+            <hr className="my-3 border-gray-200" />
 
             {isLoggedIn ? (
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
-                >
-                    <FaSignOutAlt className="mr-3 h-4 w-4" />
-                    Logout
-                </button>
+                <div className="space-y-1">
+                    <div className="flex items-center px-3 py-2 text-gray-800 font-semibold border-b border-gray-200">
+                        <FaUserCircle className="mr-2 text-indigo-600" />
+                        {user?.fullname || "User"}
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            closeMenu();
+                            onProfileClick(); 
+                        }}
+                        className="flex items-center w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-[#3d5a80]"
+                    >
+                        <FaUserCircle className="mr-3 h-4 w-4" />
+                        Profile
+                    </button>
+
+                    <Link
+                        to="/dashboard"
+                        onClick={closeMenu}
+                        className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-[#3d5a80]"
+                    >
+                        <FaTachometerAlt className="mr-3 h-4 w-4" />
+                        Dashboard
+                    </Link>
+
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+                    >
+                        <FaSignOutAlt className="mr-3 h-4 w-4" />
+                        Logout
+                    </button>
+                </div>
             ) : (
                 <Link
                     to="/login"
@@ -288,7 +313,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    // Close dropdown and mobile menu on outside click
+    // Close dropdown and menu on outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -357,7 +382,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                         <span className="sm:hidden">Post</span> 
                     </button>
 
-                    {/* Hamburger */}
+                    {/* Hamburger (Mobile Only) */}
                     <button
                         id="hamburger-button"
                         type="button"
@@ -379,12 +404,14 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                                     <FaUser className="h-4 w-4" />
                                 </button>
 
-                                {isDropdownOpen && <UserDropdown 
-                                    onLogout={handleLogout} 
-                                    closeDropdown={() => setIsDropdownOpen(false)} 
-                                    user={user} 
-                                    onProfileClick={openProfileModal} 
-                                />}
+                                {isDropdownOpen && (
+                                    <UserDropdown 
+                                        onLogout={handleLogout} 
+                                        closeDropdown={() => setIsDropdownOpen(false)} 
+                                        user={user} 
+                                        onProfileClick={openProfileModal} 
+                                    />
+                                )}
                             </>
                         ) : (
                             <Link
@@ -411,6 +438,8 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                     isLoggedIn={isLoggedIn}
                     closeMenu={closeMenu}
                     logout={logout}
+                    user={user}
+                    onProfileClick={openProfileModal}
                 />
             </div>
 
@@ -426,3 +455,4 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
 };
 
 export default Navbar;
+

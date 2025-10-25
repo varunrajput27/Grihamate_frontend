@@ -301,7 +301,7 @@ const HeroSection = ({ onSearch }) => {
       <div className="relative z-10 text-center text-white max-w-4xl mx-auto w-full">
         {/* Headings */}
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold leading-snug mb-2 sm:mb-4 drop-shadow-lg">
-          Apka Apna <br /> Property Saathi
+          Apka Apna Property Saathi
         </h1>
         <p className="text-sm sm:text-base md:text-xl font-bold text-yellow-400 mb-3 sm:mb-6 drop-shadow-md">
           With 0% Brokerage
@@ -433,3 +433,4 @@ const HeroSection = ({ onSearch }) => {
 };
 
 export default HeroSection;
+

@@ -153,10 +153,8 @@ const ContactPage = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-
     if (id === "phone" && value.length > 10) return;
     if (id === "email" && value.length > 50) return;
-
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -185,27 +183,32 @@ const ContactPage = () => {
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl bg-white/70 border border-white/40 transition-all duration-300">
-        
-        {/* Left Side - Image */}
+        {/* 🟦 Left Side - Image with Text on Top */}
         <div
-          className="relative flex flex-col justify-center items-start text-white overflow-hidden h-64 sm:h-80 lg:h-auto p-6 sm:p-10"
+          className="relative flex flex-col items-start text-white overflow-hidden h-64 sm:h-80 lg:h-auto p-6 sm:p-10 justify-start"
           style={{
             backgroundImage: "url('/images/apartment.jfif')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
-          <div className="relative z-10 mt-6 sm:mt-10">
+          {/* Dark overlay for better text visibility */}
+          <div className="absolute inset-0 "></div>
+
+          {/* Text Container */}
+          <div className="relative z-10 mt-4 sm:mt-8 lg:mt-10">
             <h2 className="text-xl sm:text-2xl lg:text-4xl font-extrabold leading-snug drop-shadow-md">
-              Let’s turn your <span className="text-blue-300">ideas</span> into reality...
+              Let’s turn your{" "}
+              <span className="text-blue-300">ideas</span> into reality...
             </h2>
             <p className="text-gray-200 text-xs sm:text-sm lg:text-base max-w-sm drop-shadow-sm mt-2">
-              Whether you're dreaming big or solving small challenges — our team crafts meaningful digital experiences that leave a lasting impression.
+              Whether you're dreaming big or solving small challenges — our team
+              crafts meaningful digital experiences that leave a lasting impression.
             </p>
           </div>
         </div>
 
-        {/* Right Side - Form */}
+        {/* 🟩 Right Side - Contact Form */}
         <div className="p-6 sm:p-8 flex flex-col justify-center bg-white">
           <h3 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
             Get in Touch
@@ -221,11 +224,15 @@ const ContactPage = () => {
                   {field.charAt(0).toUpperCase() + field.slice(1)}
                 </label>
                 <input
-                  type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                  type={
+                    field === "email" ? "email" : field === "phone" ? "tel" : "text"
+                  }
                   id={field}
                   value={formData[field]}
                   onChange={handleChange}
-                  placeholder={`Your ${field.charAt(0).toUpperCase() + field.slice(1)}`}
+                  placeholder={`Your ${
+                    field.charAt(0).toUpperCase() + field.slice(1)
+                  }`}
                   className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-300 text-gray-900 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   required
                 />
@@ -267,4 +274,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-

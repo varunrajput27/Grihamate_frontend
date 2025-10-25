@@ -137,6 +137,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const placeholderImage = "/assets/placeholder.jpg";
 
+// 🏡 Property Card Component
 const PropertyCard = ({ title, price, beds, baths, area, image }) => (
   <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transform transition duration-300 hover:-translate-y-2 mx-auto w-[95%] sm:w-[90%]">
     <div className="relative">
@@ -172,14 +173,19 @@ const PropertyCard = ({ title, price, beds, baths, area, image }) => (
   </div>
 );
 
+// 🏬 Main Component
 const CommercialProperty = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 🧠 Fetch Properties
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/sale/all`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/sale/all`
+        );
         if (response.data?.properties?.length) {
           const mapped = response.data.properties.map((prop) => ({
             id: prop._id,
@@ -202,45 +208,46 @@ const CommercialProperty = () => {
     };
 
     fetchProperties();
+
+    // 🔄 Update width on resize (fix for mobile)
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 📱 Responsive logic (real device width detection)
+  const slidesToShow =
+    windowWidth < 768 ? 1 : windowWidth < 1280 ? 2 : 3;
+
   const settings = {
-    dots: false,
-    infinite: properties.length > 3,
+    dots: windowWidth < 768,
+    infinite: properties.length > 1,
     speed: 600,
-    slidesToShow: Math.min(properties.length, 3),
+    slidesToShow,
     slidesToScroll: 1,
     autoplay: properties.length > 1,
     autoplaySpeed: 3000,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: Math.min(properties.length, 2),
-          arrows: true,
-          centerMode: false,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          arrows: false,
-          centerMode: false,
-          dots: true,
-          autoplay: true,
-        },
-      },
-    ],
+    arrows: windowWidth >= 768,
+    centerMode: false,
+    adaptiveHeight: true,
   };
 
+  // ⏳ Loading & Empty States
   if (loading)
-    return <div className="text-center py-16 text-gray-600 text-lg">Loading properties...</div>;
+    return (
+      <div className="text-center py-16 text-gray-600 text-lg">
+        Loading properties...
+      </div>
+    );
 
   if (properties.length === 0)
-    return <div className="text-center py-16 text-gray-600 text-lg">No commercial properties found.</div>;
+    return (
+      <div className="text-center py-16 text-gray-600 text-lg">
+        No commercial properties found.
+      </div>
+    );
 
+  // 🖼️ Main Render
   return (
     <section className="bg-gradient-to-b from-gray-50 via-white to-gray-100 py-16">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
@@ -249,7 +256,8 @@ const CommercialProperty = () => {
             Commercial Properties
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
-            Explore premium commercial spaces designed to elevate your business — modern, strategic, and investment-worthy.
+            Explore premium commercial spaces designed to elevate your business — modern,
+            strategic, and investment-worthy.
           </p>
         </div>
 
@@ -266,6 +274,3 @@ const CommercialProperty = () => {
 };
 
 export default CommercialProperty;
-
-
-

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaYoutube, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
-import Logo from "../assets/logo.png";
+// import Logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
@@ -13,7 +13,7 @@ const Footer = () => {
         <div>
           <div className="w-16 h-16 bg-white rounded-md flex items-center justify-center mb-3 shadow-md">
             <img
-              src={Logo}
+               src="/images/logo.png"
               alt="Grihamate Logo"
               className="w-10 h-10 object-contain"
             />

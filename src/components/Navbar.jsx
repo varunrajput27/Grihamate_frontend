@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaUser, FaPlus, FaSignOutAlt, FaUserCircle, FaTachometerAlt } from 'react-icons/fa'; 
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 import { useAuth } from '../context/AuthContext'; // Auth Context import kiya
 
 // ===========================================
@@ -88,7 +88,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                 <div className="flex-shrink-0 flex items-center">
                     <Link to="/" className="flex items-center">
                         <img
-                            src={logo}
+                            src="/images/logo.png"
                             alt="Grihamate Logo"
                             className="w-10 h-10 mr-2 object-contain"
                         />

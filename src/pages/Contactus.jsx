@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
-import connectImage from '../assets/connect.avif';
-import girlImage from '../assets/girlonphone.jpg';
-import newsletter from '../assets/newsletter.avif';
+// import connectImage from '../assets/connect.avif';
+// import girlImage from '../assets/girlonphone.jpg';
+// import newsletter from '../assets/newsletter.avif';
 
 const Contactus = () => {
   return (
@@ -10,7 +10,7 @@ const Contactus = () => {
       {/* 1. Hero Section with Background Image */}
       <section
         className="relative h-96 bg-cover bg-center flex items-center justify-center text-white"
-        style={{ backgroundImage: `url(${connectImage})` }}
+        style={{ backgroundImage: "url('/images/connect.avif')" }}
       >
         <div className="absolute inset-0 bg-black opacity-60"></div>
         <div className="relative z-10 text-center px-4">
@@ -27,7 +27,7 @@ const Contactus = () => {
           {/* Right: Girl on Phone Image */}
           <div className="hidden lg:block">
             <img
-              src={girlImage}
+              src="/images/girlonphone.jpg"
               alt="Person talking on phone"
               className="rounded-xl shadow-xl w-full h-[550px] object-cover"
             />
@@ -109,7 +109,7 @@ const Contactus = () => {
             className="w-full h-full"
           />
         </section>
-         {/* --- NEW SECTION: Subscribe Our Newsletter --- */}
+  
            {/* --- NEW SECTION: Subscribe Our Newsletter --- */}
 <section className="relative py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -136,7 +136,7 @@ const Contactus = () => {
       {/* Right Side: Image */}
       <div className="w-full h-80 lg:h-full rounded-xl overflow-hidden shadow-xl">
         <img
-          src={newsletter}
+          src="/images/newsletter.avif"
           alt="Newsletter background"
           className="w-full h-full object-cover"
         />

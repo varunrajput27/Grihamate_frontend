@@ -3,13 +3,15 @@ import newDelhiImg from '../assets/new delhi.jpg';
 import mumbaiImg from '../assets/mumbai.avif';
 import goaImg from '../assets/goa.jpg';
 import haryanaImg from '../assets/haryana.avif';
+
 const cities = [
-  { name: 'New Delhi', properties: 28, image: newDelhiImg, url: '#' },
-  { name: 'Mumbai', properties: 12, image: mumbaiImg, url: '#' },
-  { name: 'Goa', properties: 32, image: goaImg, url: '#' },
-  { name: 'Haryana', properties: 19, image: haryanaImg, url: '#' },
-//   { name: 'Uttar Pradesh', properties: 32, image: upImg, url: '#' },
+  { name: 'New Delhi', properties: 28, image: '/images/new delhi.jpg', url: '#' },
+  { name: 'Mumbai', properties: 12, image: '/images/mumbai.avif', url: '#' },
+  { name: 'Goa', properties: 32, image: '/images/goa.jpg', url: '#' },
+  { name: 'Haryana', properties: 19, image: '/images/haryana.avif', url: '#' },
+  // { name: 'Uttar Pradesh', properties: 32, image: '/images/up.jpg', url: '#' },
 ];
+
 
 const CityCard = ({ name, properties, image, url, className }) => {
   return (

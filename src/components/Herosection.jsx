@@ -77,7 +77,7 @@ const HeroSection = ({ onSearch }) => {
   return (
     <div
       className="relative h-screen bg-cover bg-center flex items-center justify-center p-4"
-      style={{ backgroundImage: "url('/search.jpg')" }}
+      style={{ backgroundImage: "url('/images/search.jpg')" }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 text-center text-white max-w-4xl mx-auto">

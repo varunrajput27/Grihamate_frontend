@@ -5,7 +5,7 @@ import React from 'react';
 // import haryanaImg from '../assets/haryana.avif';
 
 const cities = [
-  { name: 'New Delhi', properties: 28, image: '/images/new delhi.jpg', url: '#' },
+  { name: 'New Delhi', properties: 28, image: '/images/newdelhi.jpg', url: '#' },
   { name: 'Mumbai', properties: 12, image: '/images/mumbai.avif', url: '#' },
   { name: 'Goa', properties: 32, image: '/images/goa.jpg', url: '#' },
   { name: 'Haryana', properties: 19, image: '/images/haryana.avif', url: '#' },

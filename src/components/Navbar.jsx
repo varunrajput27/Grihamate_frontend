@@ -88,7 +88,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                 <div className="flex-shrink-0 flex items-center">
                     <Link to="/" className="flex items-center">
                         <img
-                            src="/images/logo.png"
+                            src="/images/logo.jfif"
                             alt="Grihamate Logo"
                             className="w-10 h-10 mr-2 object-contain"
                         />

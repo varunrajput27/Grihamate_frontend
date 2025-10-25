@@ -13,7 +13,7 @@ const Footer = () => {
         <div>
           <div className="w-16 h-16 bg-white rounded-md flex items-center justify-center mb-3 shadow-md">
             <img
-               src="/images/logo.png"
+               src="/images/logo.jfif"
               alt="Grihamate Logo"
               className="w-10 h-10 object-contain"
             />

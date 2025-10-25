@@ -10,7 +10,7 @@ const Contactus = () => {
       {/* 1. Hero Section with Background Image */}
       <section
         className="relative h-96 bg-cover bg-center flex items-center justify-center text-white"
-        style={{ backgroundImage: "url('/images/connect.avif')" }}
+        style={{ backgroundImage: "url('/images/connect.jfif')" }}
       >
         <div className="absolute inset-0 bg-black opacity-60"></div>
         <div className="relative z-10 text-center px-4">
@@ -27,7 +27,7 @@ const Contactus = () => {
           {/* Right: Girl on Phone Image */}
           <div className="hidden lg:block">
             <img
-              src="/images/girlonphone.jpg"
+              src="/images/girlonphone.jfif"
               alt="Person talking on phone"
               className="rounded-xl shadow-xl w-full h-[550px] object-cover"
             />
@@ -136,7 +136,7 @@ const Contactus = () => {
       {/* Right Side: Image */}
       <div className="w-full h-80 lg:h-full rounded-xl overflow-hidden shadow-xl">
         <img
-          src="/images/newsletter.avif"
+          src="/images/newsletter.jfif"
           alt="Newsletter background"
           className="w-full h-full object-cover"
         />

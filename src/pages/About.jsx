@@ -8,8 +8,8 @@ import React from 'react';
 
 // Team members data
 const teamMembers = [
-    { name: 'Varun Rajput', role: 'Founder', img: '/images/nobita.jpg' },
-    { name: 'Smriti Garg', role: 'UX/UI Designer', img: '/images/sizuka.jpg'},
+    { name: 'Varun Rajput', role: 'Founder', img: '/images/nobita.jfif' },
+    { name: 'Smriti Garg', role: 'UX/UI Designer', img: '/images/sizuka.jfif'},
     { name: 'Neha Singh', role: 'Frontend Developer', img: '/images/girl2.jfif' },
     { name: 'Akansha Tomar', role: 'Backend Developer', img: '/images/girl3.jfif' },
 ];
@@ -67,7 +67,7 @@ const About = () => {
             {/* Header Section with Background Image */}
             <div 
                 className="relative h-96 bg-cover bg-center flex items-center justify-center text-white"
-                style={{ backgroundImage: "url('/images/about.jpg')"  }}
+                style={{ backgroundImage: "url('/images/about.jfif')"  }}
             >
                 <div className="absolute inset-0 bg-opacity-50 flex flex-col justify-center items-center text-white px-4 text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-2">About Grihamate</h1>

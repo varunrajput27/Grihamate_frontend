@@ -60,7 +60,7 @@ const ContactPage = () => {
         <div
           className="relative p-10 flex flex-col justify-start items-start text-white space-y-5 overflow-hidden h-full lg:h-auto"
           style={{
-            backgroundImage: "url('/images/apartment.jpg')",
+            backgroundImage: "url('/images/apartment.jfif')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

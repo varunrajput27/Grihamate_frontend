@@ -5,10 +5,10 @@ import React from 'react';
 // import haryanaImg from '../assets/haryana.avif';
 
 const cities = [
-  { name: 'New Delhi', properties: 28, image: '/images/newdelhi.jpg', url: '#' },
-  { name: 'Mumbai', properties: 12, image: '/images/mumbai.avif', url: '#' },
-  { name: 'Goa', properties: 32, image: '/images/goa.jpg', url: '#' },
-  { name: 'Haryana', properties: 19, image: '/images/haryana.avif', url: '#' },
+  { name: 'New Delhi', properties: 28, image: '/images/new-delhi.jfif', url: '#' },
+  { name: 'Mumbai', properties: 12, image: '/images/mumbai.jfif', url: '#' },
+  { name: 'Goa', properties: 32, image: '/images/goa.jfif', url: '#' },
+  { name: 'Haryana', properties: 19, image: '/images/haryana.jfif', url: '#' },
   // { name: 'Uttar Pradesh', properties: 32, image: '/images/up.jpg', url: '#' },
 ];
 

@@ -348,7 +348,7 @@ const Navbar = ({ onListPropertyClick, openProfileModal }) => {
                             alt="Grihamate Logo"
                             className="w-10 h-10 mr-2 object-contain"
                         />
-                        <span className="text-xl font-semibold text-[#3d5a80]">Grihamate</span>
+                        {/* <span className="text-xl font-semibold text-[#3d5a80]">Grihamate</span> */}
                     </Link>
                 </div>
                 
